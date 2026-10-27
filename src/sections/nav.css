@@ -1,0 +1,38 @@
+/* ==========================================================================
+   Floating nav pill
+   ========================================================================== */
+.navpill {
+  position: fixed;
+  top: calc(var(--card-inset) + 14px);
+  left: 50%;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 36px);
+  padding: 6px 6px 6px 18px;
+  translate: -50% 0;
+  border: 1px solid rgba(236, 235, 228, 0.12);
+  border-radius: 999px;
+  background: rgba(22, 27, 24, 0.84);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  color: var(--c-on-card);
+  box-shadow: 0 10px 40px -16px rgba(0, 0, 0, 0.5);
+}
+.logo { display: inline-flex; align-items: center; gap: 10px; }
+.logo__mark { width: 28px; height: 20px; fill: none; stroke-width: 1.4; }
+.logo__mark path:first-child { stroke: var(--c-on-card); }
+.logo__mark path:last-child { stroke: var(--c-accent); }
+.logo__word { font: 400 1.15rem / 1 var(--f-serif); letter-spacing: 0.36em; margin-right: -0.2em; }
+.navpill__links { display: flex; gap: clamp(14px, 2vw, 30px); }
+.navpill__links a { font-size: 0.92rem; color: var(--c-on-card-dim); transition: color var(--dur-s) var(--ease-settle); }
+.navpill__links a:hover { color: var(--c-on-card); }
+.navpill .pill { --h: 40px; padding: 0 18px; font-size: 0.88rem; }
+
+@media (max-width: 960px) {
+  .navpill { padding-left: 14px; }
+  .navpill__links { display: none; }
+}
+@media (max-width: 560px) {
+  .navpill { left: var(--card-inset); right: var(--card-inset); translate: none; justify-content: space-between; margin-inline: 10px; }
+}

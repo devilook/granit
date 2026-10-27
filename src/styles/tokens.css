@@ -1,0 +1,73 @@
+/* ==========================================================================
+   Design tokens — ГРАНЬ
+   Light "paper and stone" page; the hero, the trust band and the stone
+   imagery live on dark, rounded cards (polish and depth inside, calm outside).
+   ========================================================================== */
+:root {
+  color-scheme: light;
+
+  /* page */
+  --c-page: #ecebe6;
+  --c-paper: #f4f3ef;
+  --c-ink: #141613;
+  --c-ink-dim: #5a5e57;
+  --c-ink-faint: #8d9089;
+  --c-line: rgba(20, 22, 19, 0.12);
+  --c-line-strong: rgba(20, 22, 19, 0.28);
+
+  /* dark cards (deep moss-graphite) */
+  --c-card: #161b18;
+  --c-card-2: #1e2521;
+  --c-on-card: #ecebe4;
+  --c-on-card-dim: rgba(236, 235, 228, 0.64);
+  --c-on-card-faint: rgba(236, 235, 228, 0.4);
+  --c-on-card-line: rgba(236, 235, 228, 0.14);
+  --c-glass: rgba(236, 235, 228, 0.07);
+
+  /* stone + metal + the one accent */
+  --c-stone-sand: #b7ab97;
+  --c-stone-light: #e1dfd8;
+  --c-accent: #c7a36f;        /* warm brass / sand — on dark */
+  --c-accent-ink: #8a6a3c;    /* the same accent, legible on paper */
+  --c-error: #b4573f;
+
+  /* type */
+  --f-sans: 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  --fs-hero: clamp(2.7rem, 5.4vw, 5.9rem);
+  --fs-d2: clamp(2.2rem, 4.2vw, 4.4rem);
+  --fs-d3: clamp(1.4rem, 2vw, 2rem);
+  --fs-body: clamp(1rem, 0.95rem + 0.2vw, 1.1rem);
+  --fs-small: 0.9rem;
+  --fs-label: 0.72rem;
+  --track-label: 0.16em;
+
+  /* space — 8pt */
+  --s-1: 0.5rem;
+  --s-2: 1rem;
+  --s-3: 1.5rem;
+  --s-4: 2rem;
+  --s-5: 3rem;
+  --s-6: 4rem;
+  --s-7: 6rem;
+  --s-8: 8rem;
+  --section-y: clamp(6rem, 12vw, 12rem);
+
+  /* shape */
+  --r-xl: 28px;
+  --r-l: 20px;
+  --r-m: 14px;
+  --card-inset: clamp(8px, 1vw, 14px);
+
+  /* grid */
+  --margin: clamp(20px, 5vw, 80px);
+  --gutter: clamp(16px, 2vw, 32px);
+  --measure: 36ch;
+
+  /* motion — mass: slow to start, long to settle */
+  --ease-heavy: cubic-bezier(0.76, 0, 0.18, 1);
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-s: 0.8s;
+  --dur-m: 1.2s;
+  --dur-l: 1.6s;
+}

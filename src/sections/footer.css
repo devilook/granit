@@ -1,0 +1,32 @@
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.footer { padding-top: calc(var(--section-y) * 0.5); border-top: 1px solid var(--c-line); }
+.footer__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
+.footer__grid .label { margin-bottom: var(--s-2); }
+.footer__link { display: block; font: 400 clamp(1.2rem, 1.7vw, 1.6rem) / 1.45 var(--f-sans); letter-spacing: -0.025em; transition: color var(--dur-s); }
+.footer__link:hover { color: var(--c-accent-ink); }
+.footer__text { max-width: 30ch; color: var(--c-ink-dim); font-size: var(--fs-small); }
+.footer__word {
+  margin-top: var(--s-7);
+  padding-bottom: 0.04em;
+  text-align: center;
+  font: 300 30vw / 0.78 var(--f-serif);
+  letter-spacing: 0.04em;
+  color: #dcd9d1;
+  user-select: none;
+}
+.footer__base {
+  display: flex;
+  justify-content: space-between;
+  padding-block: 22px;
+  font-size: 0.8rem;
+  color: var(--c-ink-faint);
+}
+
+@media (max-width: 960px) {
+  .footer__grid { grid-template-columns: 1fr; gap: var(--s-5); }
+}
+@media (max-width: 560px) {
+  .footer__base { flex-direction: column; gap: 10px; }
+}

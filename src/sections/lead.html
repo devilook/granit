@@ -1,0 +1,50 @@
+<!-- ============ 05 LEAD ============ -->
+<section class="lead section" id="lead">
+  <div class="container grid">
+    <div class="lead__intro">
+      <p class="label section__label" data-reveal>05 — Расчёт</p>
+      <h2 class="display-2" data-lines>
+        <span class="line"><span>Расскажите, где</span></span>
+        <span class="line"><span><em>будет стоять камень</em></span></span>
+      </h2>
+      <p class="lead__text" data-reveal>Ответим в течение 15 минут в рабочее время — с ценой, сроками и подходящими блоками.</p>
+      <div class="lead__messengers" data-reveal>
+        <a class="pill pill--line" data-contact="whatsapp" href="#" target="_blank" rel="noopener" data-magnetic>WhatsApp</a>
+        <a class="pill pill--line" data-contact="telegram" href="#" target="_blank" rel="noopener" data-magnetic>Telegram</a>
+      </div>
+    </div>
+
+    <form class="form" id="lead-form" novalidate data-reveal>
+      <label class="field">
+        <span class="field__label">Имя</span>
+        <input name="name" type="text" autocomplete="name" required />
+        <span class="field__error">Как к вам обращаться?</span>
+      </label>
+      <label class="field">
+        <span class="field__label">Телефон</span>
+        <input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7" required />
+        <span class="field__error">Проверьте номер</span>
+      </label>
+      <fieldset class="field field--choice">
+        <legend class="field__label">Линия</legend>
+        <div class="field__options">
+          <label><input type="radio" name="line" value="rock" checked /><span>Скала</span></label>
+          <label><input type="radio" name="line" value="classic" /><span>Классика</span></label>
+          <label><input type="radio" name="line" value="unsure" /><span>Пока не знаю</span></label>
+        </div>
+      </fieldset>
+      <label class="field">
+        <span class="field__label">Комментарий</span>
+        <textarea name="comment" rows="3" placeholder="Размер, место — сад, терраса, дом — и пожелания по камню"></textarea>
+      </label>
+      <div class="form__foot">
+        <button class="pill pill--accent pill--large" type="submit" data-magnetic>Получить расчёт</button>
+        <p class="form__note">Нажимая кнопку, вы соглашаетесь на обработку персональных данных.</p>
+      </div>
+      <div class="form__done" role="status">
+        <p class="display-3">Спасибо.</p>
+        <p>Мы перезвоним в течение 15 минут в рабочее время.</p>
+      </div>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,10 @@
+/* ==========================================================================
+   NEW SECTION — copy with the .html, rename the classes, then add
+   @import '../sections/your-file.css'; to src/styles/main.css
+   ========================================================================== */
+.example__body { grid-column: 4 / 13; }
+.example__text { max-width: var(--measure); margin-top: var(--s-4); color: var(--c-ink-dim); }
+
+@media (max-width: 960px) {
+  .example__body { grid-column: 1 / -1; }
+}

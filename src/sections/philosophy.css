@@ -1,0 +1,41 @@
+/* ==========================================================================
+   01 — Philosophy
+   ========================================================================== */
+.philosophy__text {
+  grid-column: 4 / 13;
+  font: 300 clamp(1.9rem, 3.7vw, 4rem) / 1.12 var(--f-serif);
+  text-wrap: pretty;
+}
+.motion-ok .philosophy__text .w { opacity: 0.14; }
+.cut { margin-top: var(--s-8); }
+.cut__svg { width: 100%; height: 60px; overflow: visible; }
+.cut__svg path { fill: none; vector-effect: non-scaling-stroke; stroke-width: 1; stroke-linejoin: bevel; }
+.split-flat { stroke: var(--c-ink); }
+.split-raw { stroke: var(--c-accent-ink); }
+.cut__caption { display: flex; justify-content: space-between; margin-top: var(--s-2); }
+
+.philosophy__pair { margin-top: var(--s-8); row-gap: var(--s-5); align-items: start; }
+.pair__item { grid-column: span 4; padding-top: var(--s-3); border-top: 1px solid var(--c-line); }
+.pair__item:nth-child(2) { margin-top: var(--s-8); }
+.pair__item p { max-width: var(--measure); color: var(--c-ink-dim); }
+.pair__title { font: 400 clamp(2.2rem, 3.6vw, 3.4rem) / 1 var(--f-sans); letter-spacing: -0.04em; margin-bottom: var(--s-3); }
+.pair__title em { color: var(--c-accent-ink); }
+.pair__image {
+  position: relative;
+  grid-column: 9 / 13;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--r-l);
+  overflow: hidden;
+  background: radial-gradient(80% 60% at 50% 40%, #232b26, var(--c-card));
+}
+.pair__image img { width: 100%; height: 100%; object-fit: cover; }
+.pair__tag { position: absolute; left: 18px; bottom: 16px; font-size: 0.78rem; color: var(--c-on-card-dim); }
+
+@media (max-width: 960px) {
+  .philosophy__text, .pair__item, .pair__image { grid-column: 1 / -1; }
+  .pair__item:nth-child(2) { margin-top: 0; }
+  .pair__image { aspect-ratio: 4 / 3; }
+}
+@media (max-width: 560px) {
+  .cut__caption { flex-direction: column; gap: 10px; }
+}

@@ -1,0 +1,86 @@
+/* ==========================================================================
+   05 — Lead
+   ========================================================================== */
+.lead__intro { grid-column: 1 / 6; }
+.lead__intro .display-2 { margin: var(--s-4) 0; }
+.lead__intro .line:last-child { padding-left: 1em; }
+.lead__text { max-width: var(--measure); color: var(--c-ink-dim); }
+.lead__messengers { display: flex; flex-wrap: wrap; gap: 10px; margin-top: var(--s-5); }
+
+.form {
+  grid-column: 7 / 13;
+  position: relative;
+  display: grid;
+  gap: var(--s-4);
+  padding: clamp(28px, 3.5vw, 48px);
+  border-radius: var(--r-xl);
+  background: var(--c-paper);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset, 0 30px 80px -40px rgba(20, 22, 19, 0.35);
+}
+.field { position: relative; display: block; border-bottom: 1px solid var(--c-line-strong); }
+.field::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--c-accent-ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-m) var(--ease-settle);
+}
+.field:focus-within::after { transform: scaleX(1); }
+.field__label { display: block; font-size: 0.78rem; font-weight: 500; color: var(--c-ink-faint); }
+.field input, .field textarea {
+  width: 100%;
+  padding: 10px 0 12px;
+  border: 0;
+  background: transparent;
+  color: var(--c-ink);
+  font: 400 1.15rem / 1.4 var(--f-sans);
+  resize: none;
+  outline: none;
+}
+.field ::placeholder { color: var(--c-ink-faint); font-size: 0.95rem; }
+.field__error { position: absolute; right: 0; top: 0; font-size: 0.75rem; color: var(--c-error); opacity: 0; transition: opacity var(--dur-s); }
+.field.is-error { border-color: var(--c-error); }
+.field.is-error .field__error { opacity: 1; }
+.field--choice { padding-bottom: 16px; }
+.field--choice legend { margin-bottom: 12px; padding: 0; }
+.field__options { display: flex; flex-wrap: wrap; gap: 8px; }
+.field--choice label { position: relative; cursor: pointer; }
+.field--choice input { position: absolute; opacity: 0; pointer-events: none; }
+.field--choice span {
+  display: inline-block;
+  padding: 9px 16px;
+  border: 1px solid var(--c-line-strong);
+  border-radius: 999px;
+  font-size: 0.9rem;
+  transition: background-color var(--dur-s) var(--ease-settle), color var(--dur-s), border-color var(--dur-s);
+}
+.field--choice input:checked + span { background: var(--c-ink); border-color: var(--c-ink); color: var(--c-paper); }
+.field--choice input:focus-visible + span { outline: 1.5px solid var(--c-accent-ink); outline-offset: 3px; }
+.form__foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); }
+.form__note { max-width: 28ch; font-size: 0.74rem; line-height: 1.5; color: var(--c-ink-faint); }
+.form.is-sending .pill { opacity: 0.5; pointer-events: none; }
+.form__done {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--s-2);
+  padding: inherit;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--dur-l) var(--ease-settle);
+}
+.form__done p:last-child { color: var(--c-ink-dim); }
+.form.is-sent > :not(.form__done) { opacity: 0; visibility: hidden; transition: opacity var(--dur-m) var(--ease-settle), visibility 0s var(--dur-m); }
+.form.is-sent .form__done { opacity: 1; visibility: visible; }
+
+@media (max-width: 960px) {
+  .lead__intro, .form { grid-column: 1 / -1; }
+  .form { margin-top: var(--s-6); }
+}

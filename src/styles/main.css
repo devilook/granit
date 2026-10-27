@@ -1,0 +1,17 @@
+/*
+ * Style entry point. Order matters: tokens → base → sections.
+ * Each section of the page has its own CSS file next to its HTML in
+ * src/sections/. Breakpoints used everywhere: 1180px (laptop),
+ * 960px (tablet), 560px (phone).
+ */
+@import './tokens.css';
+@import './base.css';
+
+@import '../sections/nav.css';
+@import '../sections/hero.css';
+@import '../sections/philosophy.css';
+@import '../sections/collection.css';
+@import '../sections/process.css';
+@import '../sections/trust.css';
+@import '../sections/lead.css';
+@import '../sections/footer.css';
