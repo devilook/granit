@@ -1,0 +1,24 @@
+<!-- ============ 02 STONES (texture viewer; list is built from STONE_INFO in content.js) ============ -->
+<section class="stones section" id="stones" aria-label="Камни">
+  <div class="container grid">
+    <p class="label section__label" data-reveal>02 — Камни</p>
+    <div class="stones__head">
+      <h2 class="display-2" data-lines>
+        <span class="line"><span>Три камня.</span></span>
+        <span class="line"><span><em>Три точки на карте.</em></span></span>
+      </h2>
+      <p class="stones__intro" data-reveal>Образцы живые: ведите курсором, и свет ляжет на полировку так же, как ляжет солнце у вас в саду.</p>
+    </div>
+
+    <div class="stones__viewer" data-reveal>
+      <canvas class="stones__canvas" role="img" aria-label="Образец камня 40 × 40 см"></canvas>
+      <div class="stones__modes" role="group" aria-label="Обработка поверхности">
+        <button type="button" class="is-active" data-mode="polish" aria-pressed="true">Полировка</button>
+        <button type="button" data-mode="raw" aria-pressed="false">Скол</button>
+      </div>
+      <p class="stones__caption"><span data-stone-name>Габбро-диабаз</span> · образец 40 × 40 см</p>
+    </div>
+
+    <div class="stones__list" role="tablist" aria-label="Выбор камня"></div>
+  </div>
+</section>

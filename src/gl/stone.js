@@ -14,24 +14,18 @@ import * as THREE from 'three';
  */
 
 // Palettes: a = deep base, b = mid cloud, c = feldspar crystals, s = speckle.
-// REPLACE_ME: tune these against real slab photos from the quarry.
+// scale = grain size (smaller = coarser), lift = how much paler the split face reads,
+// density in kg/m³ (used for the weight shown on the hero).
+// Names, deposits and descriptions for the site live in src/config/content.js → STONE_INFO.
+// REPLACE_ME: fine-tune the colours against photos of your actual slabs.
 export const STONES = {
-  // From the workshop photos: grey-green block with dense white grain.
-  speckle: { a: '#151a18', b: '#252c29', c: '#3c4541', s: '#d3d6cd', crystal: 0.55, dark: 0.35, speck: 0.7, scale: 3.4 },
-  // Warm ochre slab (split face rusty-beige, fine dark grain).
-  ochre: { a: '#5c4a3b', b: '#86705c', c: '#ab8f73', s: '#2a2420', crystal: 0.6, dark: 0.5, speck: 0.32 },
-  // Polished black for «Классика».
-  absolute: { a: '#070808', b: '#101112', c: '#1b1c1e', s: '#55595c', crystal: 0.3, dark: 0.1, speck: 0.16 },
-  // Red-brown granite (the sawn underside in the photos).
-  redwood: { a: '#3e2420', b: '#6b3d33', c: '#8f5a4a', s: '#1a1514', crystal: 0.65, dark: 0.5, speck: 0.3 },
-  gabbro: { a: '#0b0c0d', b: '#18191b', c: '#2b2c2f', s: '#7a7f84', crystal: 0.45, dark: 0.2, speck: 0.32 },
-  ubatuba: { a: '#0a110e', b: '#17221d', c: '#2c3b32', s: '#9a9471', crystal: 0.7, dark: 0.35, speck: 0.4 },
-  bluepearl: { a: '#15181d', b: '#262b33', c: '#3a4454', s: '#9db6d6', crystal: 0.85, dark: 0.3, speck: 0.55 },
-  mansurovsky: { a: '#353a35', b: '#50564f', c: '#6c7267', s: '#b4b6ab', crystal: 0.6, dark: 0.55, speck: 0.35 },
-  kashmir: { a: '#aaa397', b: '#cdc6ba', c: '#e4dfd5', s: '#5a3a33', crystal: 0.55, dark: 0.45, speck: 0.3 },
-  kashina: { a: '#7d746a', b: '#9d9386', c: '#bfb3a3', s: '#36312c', crystal: 0.6, dark: 0.55, speck: 0.3 },
-  impala: { a: '#252627', b: '#38393a', c: '#4e4f50', s: '#0e0f10', crystal: 0.5, dark: 0.6, speck: 0.25 },
-  emelyanovsky: { a: '#87888a', b: '#a3a4a3', c: '#c1c1be', s: '#232425', crystal: 0.5, dark: 0.6, speck: 0.3 },
+  // Карельский габбро-диабаз: near-black, very fine and even grain; polishes to a
+  // deep black mirror, splits to an ash-grey face with tiny glints.
+  gabbro: { a: '#08090a', b: '#0f1112', c: '#1a1d1e', s: '#4c5352', crystal: 0.4, dark: 0.15, speck: 0.22, scale: 16, lift: 4.6, density: 2950 },
+  // Лезниковский: medium-grained red granite, pink-red feldspar, grey quartz, black biotite.
+  leznikovsky: { a: '#3c1712', b: '#6a2a1f', c: '#93463a', s: '#121011', crystal: 0.7, dark: 0.7, speck: 0.5, scale: 14, lift: 1.25, density: 2650 },
+  // Дымовский: warm red-brown granite with black inclusions, medium-coarse grain.
+  dymovsky: { a: '#2a1913', b: '#4b2f24', c: '#6d4735', s: '#0d0b0a', crystal: 0.7, dark: 0.65, speck: 0.45, scale: 12, lift: 1.3, density: 2650 },
 };
 
 const NOISE_GLSL = /* glsl */ `
@@ -86,6 +80,7 @@ uniform vec3 uAmt;    // x: crystal, y: dark mica, z: bright speckle
 uniform float uSeed;
 uniform float uScale;
 uniform float uBand;  // polished edge band depth (m)
+uniform float uLift;  // split face lightening
 varying vec3 vStonePos;
 float gRaw;
 float gCrystal;
@@ -100,7 +95,8 @@ vec3 granite(vec3 pos, float raw){
   float grain  = snoise(p * 26.0);
   float grain2 = snoise(p * 52.0 + 3.1);
 
-  vec3 col = mix(uA, uB, smoothstep(-0.45, 0.65, clouds));
+  // Clouds stay gentle: granite reads even from afar, the life is in the grain.
+  vec3 col = mix(uA, uB, 0.4 + 0.6 * smoothstep(-0.45, 0.65, clouds));
   float crystals = smoothstep(0.3, 0.6, mid * 0.6 + grain * 0.5);
   col = mix(col, uC, crystals * uAmt.x);
   float dark = smoothstep(0.5, 0.72, grain2) * aa;
@@ -111,7 +107,7 @@ vec3 granite(vec3 pos, float raw){
 
   // Split face: paler, drier, a touch of dust in the crevices.
   float luma = dot(col, vec3(0.333));
-  vec3 rawCol = mix(col, vec3(luma), 0.4) * 1.3 + 0.012;
+  vec3 rawCol = mix(col, vec3(luma), 0.4) * uLift + 0.012;
   return mix(col, rawCol, raw);
 }
 `;
@@ -127,6 +123,7 @@ export function createStoneMaterial(stoneKey, { seed = 1, band = 0.022 } = {}) {
     uSeed: { value: (seed * 17.13) % 97 },
     uScale: { value: st.scale || 5 },
     uBand: { value: band },
+    uLift: { value: st.lift || 1.3 },
   };
 
   const mat = new THREE.MeshPhysicalMaterial({

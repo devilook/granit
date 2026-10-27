@@ -1,0 +1,89 @@
+/* ==========================================================================
+   02 — Stones (live texture viewer + catalogue)
+   ========================================================================== */
+.stones__head { grid-column: 4 / 13; display: grid; grid-template-columns: 1fr minmax(0, 0.8fr); gap: var(--gutter); align-items: end; }
+.stones__intro { max-width: var(--measure); color: var(--c-ink-dim); font-size: var(--fs-small); }
+.stones__viewer {
+  position: relative;
+  grid-column: 1 / 7;
+  margin-top: var(--s-7);
+  aspect-ratio: 1;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  background: var(--stone-fallback, var(--c-card));
+}
+.stones__canvas { width: 100%; height: 100%; transition: opacity 0.5s var(--ease-settle); }
+.stones__canvas.is-switching { opacity: 0.35; }
+.stones__modes {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(18, 22, 19, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.stones__modes button {
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--c-on-card-dim);
+  font: 500 0.86rem / 1 var(--f-sans);
+  cursor: pointer;
+  transition: background-color var(--dur-s) var(--ease-settle), color var(--dur-s);
+}
+.stones__modes button.is-active { background: var(--c-on-card); color: var(--c-card); }
+.stones__caption { position: absolute; left: 20px; bottom: 18px; font-size: 0.8rem; color: var(--c-on-card-dim); text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5); }
+
+.stones__list { grid-column: 8 / 13; margin-top: var(--s-7); display: grid; align-content: start; }
+.stone {
+  border-top: 1px solid var(--c-line);
+}
+.stone:last-child { border-bottom: 1px solid var(--c-line); }
+.stone__tab {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  width: 100%;
+  padding: 22px 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.stone__chip {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--c), var(--b) 55%, var(--a));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 4px 12px -4px rgba(0, 0, 0, 0.4);
+}
+.stone__name { display: block; font: 500 1.35rem / 1.2 var(--f-sans); letter-spacing: -0.03em; }
+.stone__origin { display: block; margin-top: 2px; font-size: 0.86rem; color: var(--c-ink-dim); }
+.stone__plus { width: 14px; height: 14px; position: relative; opacity: 0.6; transition: transform var(--dur-m) var(--ease-settle); }
+.stone__plus::before, .stone__plus::after { content: ''; position: absolute; inset: 6px 0; background: currentColor; }
+.stone__plus::after { inset: 0 6px; }
+.stone.is-active .stone__plus { transform: rotate(45deg); }
+.stone__body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--dur-m) var(--ease-settle); }
+.stone.is-active .stone__body { grid-template-rows: 1fr; }
+.stone__inner { overflow: hidden; padding-left: 60px; }
+.stone__text { max-width: 44ch; color: var(--c-ink-dim); font-size: var(--fs-small); }
+.stone__facts { display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; margin: 18px 0 26px; font-size: 0.86rem; }
+.stone__facts dt { color: var(--c-ink-faint); }
+.stone__facts dd { margin: 0; }
+
+@media (max-width: 960px) {
+  .stones__head { grid-column: 1 / -1; grid-template-columns: 1fr; }
+  .stones__viewer, .stones__list { grid-column: 1 / -1; }
+  .stones__viewer { margin-top: var(--s-5); aspect-ratio: 4 / 3; }
+  .stones__list { margin-top: var(--s-4); }
+}
+@media (max-width: 560px) {
+  .stone__inner { padding-left: 0; }
+}

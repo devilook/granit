@@ -1,10 +1,11 @@
-import { COLLECTION, LINES, formatPrice } from '../config/content.js';
+import { COLLECTION, LINES, STONE_INFO, formatPrice } from '../config/content.js';
 import { STONES } from '../gl/stone.js';
 
 /* Renders the collection cards and fills them with real photos or generated stills. */
 export function renderCollection(track) {
   const cards = COLLECTION.map((item, i) => {
     const st = STONES[item.stone];
+    const info = STONE_INFO[item.stone];
     const size = `${Math.round(item.length * 100)} × ${Math.round(item.width * 100)} см`;
     const second = item.line === 'classic' ? 'Кромка' : 'Скол';
     return `
@@ -15,7 +16,7 @@ export function renderCollection(track) {
           <span class="card__line">${LINES[item.line]}</span>
           <div class="card__frame">
             <div class="card__ph" aria-hidden="true"></div>
-            <img class="card__img card__img--top" alt="Стол «${item.name}», ${item.stoneName}: полированная поверхность" decoding="async" />
+            <img class="card__img card__img--top" alt="Стол «${item.name}», ${info.short}: полированная поверхность" decoding="async" />
             <img class="card__img card__img--raw" alt="Стол «${item.name}»: ${item.line === 'classic' ? 'кромка и опоры' : 'колотая нижняя сторона'}" decoding="async" />
           </div>
           <span class="card__face"><span>Полировка</span><span>${second}</span></span>
@@ -23,7 +24,7 @@ export function renderCollection(track) {
         <div class="card__meta">
           <span class="card__num">${String(i + 1).padStart(2, '0')}</span>
           <h3 class="card__name">${item.name}</h3>
-          <p class="card__stone">${item.stoneName}</p>
+          <p class="card__stone">${info.short}</p>
           <p class="card__size">${size}</p>
           <p class="card__price">от ${formatPrice(item.price)} ₽</p>
         </div>

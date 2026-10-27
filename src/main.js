@@ -6,6 +6,7 @@ import { applyTorn, splitLinePath } from './ui/torn.js';
 import { drawContours } from './ui/contours.js';
 import { renderCollection, fillCollection } from './ui/collection.js';
 import { initForm } from './ui/form.js';
+import { initStones } from './ui/stones.js';
 
 const root = document.documentElement;
 root.classList.add(env.reducedMotion ? 'motion-reduced' : 'motion-ok');
@@ -22,13 +23,13 @@ document.querySelectorAll('[data-split-line]').forEach((svg) => {
   svg.querySelector('.split-raw').setAttribute('d', splitLinePath(Number(svg.dataset.splitLine) || 3));
 });
 
-drawContours(document.querySelector('.hero__contours'), { seed: HERO.table.seed });
 drawContours(document.querySelector('.trust__contours'), { seed: 5, cx: 0.85, cy: 0.9, rings: 9 });
 
 const collection = document.querySelector('#collection');
 renderCollection(collection.querySelector('.collection__track'));
 applyTorn();
 initForm(document.querySelector('#lead-form'));
+initStones(document.querySelector('#stones'), { webgl: env.webgl });
 
 // Philosophy macro: real photo if given; otherwise a close-up of the 3D stone.
 function initMacro() {
@@ -123,7 +124,7 @@ async function initHero() {
   if (HERO.mode !== 'webgl' || !env.webgl) return useVideoFallback();
   const { createHero } = await import('./gl/hero.js');
   const drawLeaders = env.narrow ? null : initLeaders();
-  hero = createHero(canvas, { table: HERO.table, onFrame: drawLeaders });
+  hero = createHero(canvas, { table: HERO.table, backdrop: HERO.backdrop, onFrame: drawLeaders });
   // The weight is computed from the actual generated stone.
   heroEl.querySelector('[data-weight]').textContent = `≈ ${hero.dims.weight.toLocaleString('ru-RU')} кг`;
   return hero;

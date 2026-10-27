@@ -1,11 +1,10 @@
 import * as THREE from 'three';
 import { mulberry32, smoothstep, clamp } from '../utils/random.js';
 import { createNoise } from '../utils/noise.js';
-import { createStoneMaterial, createMetalMaterial } from './stone.js';
+import { createStoneMaterial, createMetalMaterial, STONES } from './stone.js';
 
 export const TABLE_HEIGHT = 0.75;
 const BAND = 0.018; // polished edge band under the top; the split begins below it
-const DENSITY = 2700; // kg/m³, granite
 
 /*
  * Two product lines, one generator.
@@ -33,7 +32,7 @@ const hash = (x, y, s) => {
  * Voronoi facets: every cell is a small tilted plane, so the surface breaks
  * into flat chips with sharp borders: how split granite actually looks.
  */
-function facet(u, v, cell, seed, amp, tilt) {
+export function facet(u, v, cell, seed, amp, tilt) {
   const cu = Math.floor(u / cell);
   const cv = Math.floor(v / cell);
   let best = 1e9, bx = 0, by = 0, bu = 0, bv = 0;
@@ -81,9 +80,10 @@ export function buildTable({
   length = 3,
   width = 1.1,
   seed = 1,
-  stone = 'speckle',
+  stone = 'gabbro',
   shape = 'organic',
   detail = 1,
+  thickness = null, // [min at rim, extra in the belly] metres; null = random per seed
 } = {}) {
   const rand = mulberry32(seed);
   const { noise2 } = createNoise(rand);
@@ -107,14 +107,15 @@ export function buildTable({
   if (nrm[0][0] * rim[0][0] + nrm[0][1] * rim[0][1] < 0) nrm.forEach((v) => { v[0] *= -1; v[1] *= -1; });
 
   // Thickness field: a heavy belly, thinner at the rim, broken into chips.
-  const tMin = classic ? 0.03 : 0.1 + rand() * 0.02;
-  const tRange = classic ? 0 : 0.09 + rand() * 0.05;
+  const r1 = rand(), r2 = rand();
+  const tMin = classic ? 0.03 : thickness ? thickness[0] : 0.1 + r1 * 0.02;
+  const tRange = classic ? 0 : thickness ? thickness[1] : 0.09 + r2 * 0.05;
   const ox = rand() * 40, oz = rand() * 40;
   const depthAt = (x, z, rimness) => {
     if (classic) return tMin;
     const base = 0.5 + 0.5 * (noise2(x * 0.8 + ox, z * 0.8 + oz) * 0.7 + noise2(x * 2.2, z * 2.2 + ox) * 0.3);
     const belly = 0.35 + 0.65 * (1 - rimness);
-    const chips = facet(x, z, 0.13, seed, 0.022, 0.32) + facet(x + 3, z + 7, 0.045, seed + 5, 0.006, 0.18);
+    const chips = facet(x, z, 0.13, seed, 0.012, 0.42) + facet(x + 3, z + 7, 0.045, seed + 5, 0.004, 0.2);
     return tMin + tRange * base * belly + chips + noise2(x * 25, z * 25) * 0.0025;
   };
 
@@ -178,7 +179,8 @@ export function buildTable({
           y = -(BAND + t * (d - BAND));
           // Split face: flat chips, a slight belly, a small undercut at the bottom.
           const w = smoothstep(0, 0.12, t);
-          const chip = facet(arc[j], y, 0.07, seed + 2, 0.016, 0.38) + facet(arc[j] + 9, y, 0.028, seed + 9, 0.004, 0.25);
+          // Chips are wider than tall and tilted rather than stepped: layered, not blocky.
+          const chip = facet(arc[j] * 0.5, y * 1.5, 0.1, seed + 2, 0.008, 0.45) + facet(arc[j] + 9, y * 1.3, 0.045, seed + 9, 0.002, 0.18);
           const off = (chip + 0.012 * Math.sin(Math.PI * t) - 0.02 * t * t) * w;
           x += nx * off; z += nz * off;
         }
@@ -271,7 +273,7 @@ export function buildTable({
     slab,
     anchors,
     dispose,
-    dims: { length, width, weight: Math.round((area * meanDepth * DENSITY) / 10) * 10 },
+    dims: { length, width, weight: Math.round((area * meanDepth * (STONES[stone]?.density || 2700)) / 10) * 10 },
   };
 }
 
